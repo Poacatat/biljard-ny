@@ -15,10 +15,29 @@ const auth = getAuth(app);
 
 
 
-async function new_player(username){
+async function verify_game(gid, token){
     try {
-        const token = await auth.currentUser.getIdToken();
+        const response = await fetch(url + '/games/verify', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({gid,token})
+        });
 
+        const data = await response.json();
+        console.log("Verified game response: ");
+        console.log(data);
+
+    } catch (error){
+        console.error('Error creating new player:', error);
+    }
+}
+
+async function new_player(username, token){
+    try {
+
+        console.log(JSON.stringify({token,username}));
         const response = await fetch(url + '/players/new', {
             method: 'POST',
             headers: {
@@ -28,7 +47,7 @@ async function new_player(username){
         });
 
         const data = await response.json();
-        console.log("New user");
+        console.log("New player");
         console.log(data);
 
     } catch (error){
@@ -42,6 +61,7 @@ async function new_user(username, email, pwd){
         const result = await createUserWithEmailAndPassword(auth, email, pwd);
         const token = await result.user.getIdToken();
 
+
         const response = await fetch(url + '/auth', {
             method: 'POST',
             headers: {
@@ -52,9 +72,9 @@ async function new_user(username, email, pwd){
 
 
         const data = await response.json();
-        console.log("New player: ");
-        console.log(data)
-        new_player(username)
+        console.log("New user: ");
+        console.log(data);
+        new_player(username, token);
     } catch (error){
         console.error('Error creating new user:', error);
     }
@@ -152,10 +172,10 @@ async function get_player(uid) {
 }
 
 
-
-//new_user("Pdiddy","linda.bergstig@gmail.com", "password");
-login("linda.bergstig@gmail.com", "password").then(() => {add_game(['Pdiddy', 'Dootz'], 'Pdiddy ')}).then(() => {get_games()});
-await new Promise(r => setTimeout(r, 1000));
-console.log(auth.currentUser.user.uid)
+//login("linda.bergstig@gmail.com", "password").then(() =>{ 
+new_user("Pdiddy","linda.bergstig@gmail.com", "password")//});
+//login("linda.bergstig@gmail.com", "password").then(() => {add_game(['Pdiddy', 'Dootz'], 'Pdiddy ')}).then(() => {get_games()});
+//await new Promise(r => setTimeout(r, 1000));
+//onsole.log(auth.currentUser.user.uid)
 //const token = await auth.currentUser.user.getIdToken();
-get_player(auth.currentUser.user.uid)
+//get_player(auth.currentUser.user.uid)
