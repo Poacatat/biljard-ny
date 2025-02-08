@@ -28,6 +28,8 @@ async function new_player(username){
         });
 
         const data = await response.json();
+        console.log("New user");
+        console.log(data);
 
     } catch (error){
         console.error('Error creating new player:', error);
@@ -62,6 +64,9 @@ async function new_user(username, email, pwd){
 async function login(email, pwd){
     try {
         const result = await signInWithEmailAndPassword(auth, email, pwd);
+        auth.currentUser = result;
+
+        
         const token = await result.user.getIdToken(); 
 
         const response = await fetch(url + '/auth', {
@@ -92,7 +97,10 @@ async function get_game_by_uid(uid) {
 }
 
 
-async function get_game() {
+async function get_games() {
+
+    console.log(auth.currentUser.user.reloadUserInfo.email);
+
     try {
         let response = await fetch(url + '/games/get');
         let data = await response.json();
@@ -112,7 +120,9 @@ async function get_player_games(uid) {
     }
 }
 
-async function add_game(players, winner, token) {
+async function add_game(players, winner) {
+    const token = await auth.currentUser.user.getIdToken();
+    console.log(JSON.stringify({ players, winner, token }));
     try {
         let response = await fetch(url + '/games/add', {
             method: 'POST',
@@ -133,6 +143,7 @@ async function add_game(players, winner, token) {
 async function get_player(uid) {
     try {
         let response = await fetch(url + '/players/get/' + uid);
+        console.log(await response);
         let data = await response.json();
         console.log(data);
     } catch (error) {
@@ -142,7 +153,9 @@ async function get_player(uid) {
 
 
 
-new_user("Pdiddy","linda.bergstig@gmail.com", "password");
-login("linda.bergstig@gmail.com", "password")
-//add_game(())
-//get_game("") 
+//new_user("Pdiddy","linda.bergstig@gmail.com", "password");
+login("linda.bergstig@gmail.com", "password").then(() => {add_game(['Pdiddy', 'Dootz'], 'Pdiddy ')}).then(() => {get_games()});
+await new Promise(r => setTimeout(r, 1000));
+console.log(auth.currentUser.user.uid)
+//const token = await auth.currentUser.user.getIdToken();
+get_player(auth.currentUser.user.uid)
