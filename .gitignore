@@ -1,0 +1,38 @@
+# Rust build directory
+/target/
+
+#node module thingies
+/src/node_modules/
+
+/src/secret.json
+
+# Cargo package manager files
+**/Cargo.lock
+
+# Rust build artifacts
+**/*.rs.bk
+**/*.rlib
+
+# Temporary files
+**/*.tmp
+**/*.swp
+**/*.swo
+
+# IDE/editor specific files
+.idea/
+.vscode/
+*.iml
+
+# Backup files
+*.bak
+*.log
+
+# Binary and executable files
+/debug/
+/release/
+*.exe
+*.out
+*.app
+
+# Rust test output
+/tests/output/
