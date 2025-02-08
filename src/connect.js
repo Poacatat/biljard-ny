@@ -98,7 +98,7 @@ async function login(email, pwd){
         });
 
         const data = await response.json();
-        console.log('Backend Response:', data);
+        //console.log('Backend Response:', data);
     } catch (error) {
         console.error('Error during login:', error);
     }
@@ -142,7 +142,7 @@ async function get_player_games(uid) {
 
 async function add_game(players, winner) {
     const token = await auth.currentUser.user.getIdToken();
-    console.log(JSON.stringify({ players, winner, token }));
+    //console.log(JSON.stringify({ players, winner, token }));
     try {
         let response = await fetch(url + '/games/add', {
             method: 'POST',
@@ -173,8 +173,14 @@ async function get_player(uid) {
 
 
 //login("linda.bergstig@gmail.com", "password").then(() =>{ 
-new_user("Pdiddy","linda.bergstig@gmail.com", "password")//});
-//login("linda.bergstig@gmail.com", "password").then(() => {add_game(['Pdiddy', 'Dootz'], 'Pdiddy ')}).then(() => {get_games()});
+//new_user("Pdiddy","linda.bergstig@gmail.com", "password")//});
+login("linda.bergstig@gmail.com", "password").then(() => {add_game(['Pdiddy', 'Dootz'], 'Pdiddy')})
+await new Promise(r => setTimeout(r, 1000));
+
+add_game(['Pdiddy', 'Dootz'], 'Pdiddy')
+add_game(['Pdiddy', 'Dootz'], 'Dootz')
+add_game(['Pdiddy', 'Theo'], 'Pdiddy')
+add_game(['Pdiddy', 'Oscar'], 'Oscar')
 //await new Promise(r => setTimeout(r, 1000));
 //onsole.log(auth.currentUser.user.uid)
 //const token = await auth.currentUser.user.getIdToken();

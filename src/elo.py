@@ -1,4 +1,5 @@
 import json
+from google.cloud import firestore
 import os
 
 class EloTrackerError(Exception):
